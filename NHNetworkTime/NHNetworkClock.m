@@ -3,24 +3,19 @@
 #import "NHNetworkClock.h"
 #import "NHNTLog.h"
 
-@interface NHNetworkClock () <NHNetAssociationDelegate> {
+@interface NHNetworkClock () <NHNetAssociationDelegate>
 
-    NSMutableArray *        timeAssociations;
-    NSArray *               sortDescriptors;
-
-    NSSortDescriptor *      dispersionSortDescriptor;
-    dispatch_queue_t        associationDelegateQueue;
-    
-}
+@property (nonatomic) NSMutableArray *timeAssociations;
+@property (nonatomic) NSArray *sortDescriptors;
+@property (nonatomic) NSSortDescriptor *dispersionSortDescriptor;
+@property (nonatomic) dispatch_queue_t associationDelegateQueue;
+@property (nonatomic, copy) void (^complete)();
 
 @end
 
-#pragma mark -
-#pragma mark                        N E T W O R K • C L O C K
-
 @implementation NHNetworkClock
 
-+ (instancetype) sharedNetworkClock {
++ (instancetype)sharedNetworkClock {
     static id               sharedNetworkClockInstance = nil;
     static dispatch_once_t  onceToken;
 
@@ -31,27 +26,28 @@
     return sharedNetworkClockInstance;
 }
 
-- (instancetype) init {
+- (instancetype)init {
     if (self = [super init]) {
-        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"dispersion" ascending:YES]];
-        timeAssociations = [NSMutableArray arrayWithCapacity:100];
-        
-        [[[NSOperationQueue alloc] init] addOperation:[[NSInvocationOperation alloc]
-                                                       initWithTarget:self
-                                                       selector:@selector(createAssociations)
-                                                       object:nil]];
+        self.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"dispersion" ascending:YES]];
+        self.timeAssociations = [NSMutableArray arrayWithCapacity:100];
     }
     
     return self;
 }
 
+- (void)reset {
+    self.isSynchronized = NO;
+    [self finishAssociations];
+    [self.timeAssociations removeAllObjects];
+}
+
 // Return the offset to network-derived UTC.
 
-- (NSTimeInterval) networkOffset {
+- (NSTimeInterval)networkOffset {
 
-    if ([timeAssociations count] == 0) return 0.0;
+    if ([self.timeAssociations count] == 0) return 0.0;
     
-    NSArray *       sortedArray = [timeAssociations sortedArrayUsingDescriptors:sortDescriptors];
+    NSArray *       sortedArray = [self.timeAssociations sortedArrayUsingDescriptors:self.sortDescriptors];
 
     double          timeInterval = 0.0;
     short           usefulCount = 0;
@@ -64,8 +60,8 @@
             }
             else {
                 NSLog(@"Clock•Drop: [%@]", timeAssociation.server);
-                if ([timeAssociations count] > 8) {
-                    [timeAssociations removeObject:timeAssociation];
+                if ([self.timeAssociations count] > 8) {
+                    [self.timeAssociations removeObject:timeAssociation];
                     [timeAssociation finish];
                 }
             }
@@ -81,13 +77,17 @@
     return timeInterval;
 }
 
-- (NSDate *) networkTime {
+#pragma mark - Get time
+
+- (NSDate *)networkTime {
     return [[NSDate date] dateByAddingTimeInterval:-[self networkOffset]];
 }
 
+#pragma mark - Associations
+
 // Use the following time servers or, if it exists, read the "ntp.hosts" file from the application resources and derive all the IP addresses referred to, remove any duplicates and create an 'association' (individual host client) for each one.
 
-- (void) createAssociations {
+- (void)createAssociations {
     NSArray *           ntpDomains;
     NSString *          filePath = [[NSBundle mainBundle] pathForResource:@"ntp.hosts" ofType:@""];
     if (nil == filePath) {
@@ -162,25 +162,44 @@
         NHNetAssociation *    timeAssociation = [[NHNetAssociation alloc] initWithServerName:server];
         timeAssociation.delegate = self;
 
-        [timeAssociations addObject:timeAssociation];
+        [self.timeAssociations addObject:timeAssociation];
         [timeAssociation enable];                               // starts are randomized internally
     }
 }
 
 // Stop all the individual ntp clients associations ..
-- (void) finishAssociations {
-    for (NHNetAssociation * timeAssociation in timeAssociations) {
+
+- (void)finishAssociations {
+    for (NHNetAssociation * timeAssociation in self.timeAssociations) {
         timeAssociation.delegate = nil;
         [timeAssociation finish];
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)netAssociationDidFinishGetTime:(NHNetAssociation *)netAssociation {
-    NSLog(@"huync - %s - %d, %@, %lf", __PRETTY_FUNCTION__, netAssociation.trusty, netAssociation.server, netAssociation.offset);
+#pragma mark - Sync
+
+- (void)syncWithComplete:(void (^)())complete {
+    [self reset];
+    self.complete = complete;
+    
+    [[[NSOperationQueue alloc] init] addOperation:[[NSInvocationOperation alloc]
+                                                   initWithTarget:self
+                                                   selector:@selector(createAssociations)
+                                                   object:nil]];
 }
 
-#pragma mark -
-#pragma mark                        I n t e r n a l  •  M e t h o d s
+#pragma mark - NHNetAssociationDelegate
+
+- (void)netAssociationDidFinishGetTime:(NHNetAssociation *)netAssociation {
+    if(netAssociation.active && netAssociation.trusty) {
+        if(self.complete) {
+            self.complete();
+            self.complete = nil;
+        }
+        self.isSynchronized = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNHNetworkTimeSyncCompleteNotification object:nil userInfo:nil];
+    }
+}
 
 @end

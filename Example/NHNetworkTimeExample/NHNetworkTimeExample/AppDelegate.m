@@ -17,7 +17,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [NHNetworkClock sharedNetworkClock];
+    [[NHNetworkClock sharedNetworkClock] syncWithComplete:^{
+        NSLog(@"huync - %s - Time synced %@", __PRETTY_FUNCTION__, [NSDate networkDate]);
+    }];
     return YES;
 }
 
