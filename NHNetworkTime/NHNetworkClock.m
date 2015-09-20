@@ -3,6 +3,8 @@
 #import "NHNetworkClock.h"
 #import "NHNTLog.h"
 
+#define kTimeOffsetKey @"kTimeOffsetKey"
+
 @interface NHNetworkClock () <NHNetAssociationDelegate>
 
 @property (nonatomic) NSMutableArray *timeAssociations;
@@ -30,6 +32,7 @@
     if (self = [super init]) {
         self.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"dispersion" ascending:YES]];
         self.timeAssociations = [NSMutableArray arrayWithCapacity:100];
+        self.shouldUseSavedSynchronizedTime = YES;
     }
     
     return self;
@@ -44,34 +47,40 @@
 // Return the offset to network-derived UTC.
 
 - (NSTimeInterval)networkOffset {
-
-    if ([self.timeAssociations count] == 0) return 0.0;
     
-    NSArray *       sortedArray = [self.timeAssociations sortedArrayUsingDescriptors:self.sortDescriptors];
-
-    double          timeInterval = 0.0;
-    short           usefulCount = 0;
+    double timeInterval = 0.0;
+    short usefulCount = 0;
     
-    for (NHNetAssociation * timeAssociation in sortedArray) {
-        if (timeAssociation.active) {
-            if (timeAssociation.trusty) {
-                usefulCount++;
-                timeInterval = timeInterval + timeAssociation.offset;
-            }
-            else {
-                NSLog(@"Clock•Drop: [%@]", timeAssociation.server);
-                if ([self.timeAssociations count] > 8) {
-                    [self.timeAssociations removeObject:timeAssociation];
-                    [timeAssociation finish];
+    if(self.timeAssociations.count > 0) {
+    
+        NSArray *sortedArray = [self.timeAssociations sortedArrayUsingDescriptors:self.sortDescriptors];
+        
+        for (NHNetAssociation * timeAssociation in sortedArray) {
+            if (timeAssociation.active) {
+                if (timeAssociation.trusty) {
+                    usefulCount++;
+                    timeInterval = timeInterval + timeAssociation.offset;
                 }
+                else {
+                    NSLog(@"Clock•Drop: [%@]", timeAssociation.server);
+                    if ([self.timeAssociations count] > 8) {
+                        [self.timeAssociations removeObject:timeAssociation];
+                        [timeAssociation finish];
+                    }
+                }
+                
+                if (usefulCount == 8) break;                // use 8 best dispersions
             }
-            
-            if (usefulCount == 8) break;                // use 8 best dispersions
         }
     }
     
     if (usefulCount > 0) {
         timeInterval = timeInterval / usefulCount;
+    }
+    else {
+        if(self.shouldUseSavedSynchronizedTime) {
+            timeInterval = [[NSUserDefaults standardUserDefaults] doubleForKey:kTimeOffsetKey];
+        }
     }
 
     return timeInterval;
@@ -193,10 +202,14 @@
 
 - (void)netAssociationDidFinishGetTime:(NHNetAssociation *)netAssociation {
     if(netAssociation.active && netAssociation.trusty) {
+        
+        [[NSUserDefaults standardUserDefaults] setDouble:netAssociation.offset forKey:kTimeOffsetKey];
+        
         if(self.complete) {
             self.complete();
             self.complete = nil;
         }
+        
         self.isSynchronized = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:kNHNetworkTimeSyncCompleteNotification object:nil userInfo:nil];
     }
