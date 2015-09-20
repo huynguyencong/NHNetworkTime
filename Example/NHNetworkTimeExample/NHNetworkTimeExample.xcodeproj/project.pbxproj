@@ -30,14 +30,14 @@
 		6145E9AA1BAE61930090DEC0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6145E9AD1BAE61930090DEC0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6145E9AF1BAE61930090DEC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6145E9B61BAE61A50090DEC0 /* ios-ntp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ios-ntp.h"; sourceTree = "<group>"; };
+		6145E9B61BAE61A50090DEC0 /* NHNetworkTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHNetworkTime.h; sourceTree = "<group>"; };
 		6145E9B71BAE61A50090DEC0 /* NHNetAssociation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHNetAssociation.h; sourceTree = "<group>"; };
 		6145E9B81BAE61A50090DEC0 /* NHNetAssociation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHNetAssociation.m; sourceTree = "<group>"; };
 		6145E9B91BAE61A50090DEC0 /* NHNetworkClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHNetworkClock.h; sourceTree = "<group>"; };
 		6145E9BA1BAE61A50090DEC0 /* NHNetworkClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHNetworkClock.m; sourceTree = "<group>"; };
 		6145E9BB1BAE61A50090DEC0 /* NSDate+NetworkClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+NetworkClock.h"; sourceTree = "<group>"; };
 		6145E9BC1BAE61A50090DEC0 /* NSDate+NetworkClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NetworkClock.m"; sourceTree = "<group>"; };
-		6145E9BD1BAE61A50090DEC0 /* ntp-log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ntp-log.h"; sourceTree = "<group>"; };
+		6145E9BD1BAE61A50090DEC0 /* NHNTLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHNTLog.h; sourceTree = "<group>"; };
 		8650FECB11C7D1ADD8BE9325 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		91EFB86F8FF89B90715E12E6 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D11798A2BB0DA7F9A9FC84D8 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,14 +109,14 @@
 		6145E9B51BAE61A50090DEC0 /* NHNetworkTime */ = {
 			isa = PBXGroup;
 			children = (
-				6145E9B61BAE61A50090DEC0 /* ios-ntp.h */,
+				6145E9B61BAE61A50090DEC0 /* NHNetworkTime.h */,
 				6145E9B71BAE61A50090DEC0 /* NHNetAssociation.h */,
 				6145E9B81BAE61A50090DEC0 /* NHNetAssociation.m */,
 				6145E9B91BAE61A50090DEC0 /* NHNetworkClock.h */,
 				6145E9BA1BAE61A50090DEC0 /* NHNetworkClock.m */,
 				6145E9BB1BAE61A50090DEC0 /* NSDate+NetworkClock.h */,
 				6145E9BC1BAE61A50090DEC0 /* NSDate+NetworkClock.m */,
-				6145E9BD1BAE61A50090DEC0 /* ntp-log.h */,
+				6145E9BD1BAE61A50090DEC0 /* NHNTLog.h */,
 			);
 			name = NHNetworkTime;
 			path = ../../NHNetworkTime;

@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "ios-ntp.h"
+#import "NHNetworkTime.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *currentLabel;

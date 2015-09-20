@@ -1,9 +1,9 @@
 #import <arpa/inet.h>
 
 #import "NHNetworkClock.h"
-#import "ntp-log.h"
+#import "NHNTLog.h"
 
-@interface NHNetworkClock () {
+@interface NHNetworkClock () <NHNetAssociationDelegate> {
 
     NSMutableArray *        timeAssociations;
     NSArray *               sortDescriptors;
@@ -29,6 +29,20 @@
     });
 
     return sharedNetworkClockInstance;
+}
+
+- (instancetype) init {
+    if (self = [super init]) {
+        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"dispersion" ascending:YES]];
+        timeAssociations = [NSMutableArray arrayWithCapacity:100];
+        
+        [[[NSOperationQueue alloc] init] addOperation:[[NSInvocationOperation alloc]
+                                                       initWithTarget:self
+                                                       selector:@selector(createAssociations)
+                                                       object:nil]];
+    }
+    
+    return self;
 }
 
 // Return the offset to network-derived UTC.
@@ -69,20 +83,6 @@
 
 - (NSDate *) networkTime {
     return [[NSDate date] dateByAddingTimeInterval:-[self networkOffset]];
-}
-
-- (instancetype) init {
-    if (self = [super init]) {
-        sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"dispersion" ascending:YES]];
-        timeAssociations = [NSMutableArray arrayWithCapacity:100];
-
-        [[[NSOperationQueue alloc] init] addOperation:[[NSInvocationOperation alloc]
-                                                      initWithTarget:self
-                                                            selector:@selector(createAssociations)
-                                                              object:nil]];
-    }
-    
-    return self;
 }
 
 // Use the following time servers or, if it exists, read the "ntp.hosts" file from the application resources and derive all the IP addresses referred to, remove any duplicates and create an 'association' (individual host client) for each one.
@@ -160,6 +160,7 @@
     // ... now start one 'association' (network clock server) for each address.
     for (NSString * server in hostAddresses) {
         NHNetAssociation *    timeAssociation = [[NHNetAssociation alloc] initWithServerName:server];
+        timeAssociation.delegate = self;
 
         [timeAssociations addObject:timeAssociation];
         [timeAssociation enable];                               // starts are randomized internally
@@ -168,8 +169,15 @@
 
 // Stop all the individual ntp clients associations ..
 - (void) finishAssociations {
-    for (NHNetAssociation * timeAssociation in timeAssociations) [timeAssociation finish];
+    for (NHNetAssociation * timeAssociation in timeAssociations) {
+        timeAssociation.delegate = nil;
+        [timeAssociation finish];
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)netAssociationDidFinishGetTime:(NHNetAssociation *)netAssociation {
+    NSLog(@"huync - %s - %d, %@, %lf", __PRETTY_FUNCTION__, netAssociation.trusty, netAssociation.server, netAssociation.offset);
 }
 
 #pragma mark -

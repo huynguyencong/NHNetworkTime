@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "ios-ntp.h"
+#import "NHNetworkTime.h"
 
 @interface AppDelegate ()
 

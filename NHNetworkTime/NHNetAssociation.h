@@ -11,22 +11,19 @@
 #import <UIKit/UIKit.h>
 #import <sys/time.h>
 
-@protocol NetAssociationDelegate <NSObject>
 
-- (void) reportFromDelegate;
-
-@end
 
 #import "GCDAsyncUdpSocket.h"
 
-@interface NHNetAssociation : NSObject <GCDAsyncUdpSocketDelegate, NetAssociationDelegate>
+@protocol NHNetAssociationDelegate;
 
-@property (nonatomic, weak) id delegate;
+@interface NHNetAssociation : NSObject <GCDAsyncUdpSocketDelegate>
 
 @property (readonly) NSString *         server;             // server name "123.45.67.89"
 @property (readonly) BOOL               active;             // is this clock running yet?
 @property (readonly) BOOL               trusty;             // is this clock trustworthy
 @property (readonly) double             offset;             // offset from device time (secs)
+@property (weak) id<NHNetAssociationDelegate> delegate;
 
 - (instancetype) initWithServerName:(NSString *) serverName NS_DESIGNATED_INITIALIZER;
 
@@ -38,4 +35,10 @@
 
 - (void) sendTimeQuery;                                     // send one datagram to server ..
 
+@end
+
+@protocol NHNetAssociationDelegate <NSObject>
+
+- (void)netAssociationDidFinishGetTime:(NHNetAssociation *)netAssociation;
+                        
 @end

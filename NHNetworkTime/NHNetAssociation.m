@@ -1,6 +1,6 @@
 #import "NHNetAssociation.h"
 #import <sys/time.h>
-#import "ntp-log.h"
+#import "NHNTLog.h"
 
 /*┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
   │  NTP Timestamp Structure                                                                         │
@@ -105,7 +105,6 @@ double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * stop) {
 
 - (instancetype) initWithServerName:(NSString *) serverName {
     if (self = [super init]) {
-        _delegate = self;
         pollingIntervalIndex = 0;                           // ensure the first timer firing is soon
         _active = FALSE;                                    // isn't running till it reports time ...
         _trusty = FALSE;                                    // don't trust this clock to start with ...
@@ -288,10 +287,14 @@ double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * stop) {
 //      NTP_Logging(@"%@", [self prettyPrintTimers]);
     }
     
-    [_delegate reportFromDelegate];                                 // tell delegate we're done
+    [self calculateTrusty];
+
+    if(self.delegate && [self.delegate respondsToSelector:@selector(netAssociationDidFinishGetTime:)]) {
+        [self.delegate netAssociationDidFinishGetTime:self];
+    }
 }
 
-- (void) reportFromDelegate {
+- (void) calculateTrusty {
     // the packet is trustworthy -- compute and store offset in 8-slot fifo ...
     
     fifoQueue[fifoIndex++ % 8] = _offset;                           // store offset in seconds
