@@ -13,8 +13,6 @@ Computers using the NTP protocol usually employ it in a continuous low level tas
 
 ### Usage
 
-`#import "ios-ntp.h"`
-
 #### Cocoapod
 Add below line to Podfile:  
 
@@ -26,14 +24,15 @@ and run `pod update` in Terminal
 Add all file in folder NHNetworkTime to your project. Then add `CocoaAsyncSocket` use Cocoapod or add manual.
 
 #### Simple to use
-Simply create a `NHNetworkClock`.  As soon as you create it, the NTP
-process will begin polling the time servers in the "ntp.hosts" file (if
-the file isn't found, a tasteful set of default servers will be used).
-You may wish to start it when the application starts, so that the time is
-well synchronized by the time you actually want to use it, just call it
-in your AppDelegate's `didFinishLaunching` method.:
+Import this whenever you want to get time:   
 
-Simply create a `NHNetworkClock`. Call `syncWithComplete:` in `- application: didFinishLaunchingWithOptions:` to synchronize time from server. Use completion block if you want:
+```
+#import "NHNetworkTime.h"
+```
+
+
+
+Call `syncWithComplete:` in `- application: didFinishLaunchingWithOptions:` to synchronize time from server. Use completion block if you want:
 
 ```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -42,10 +41,10 @@ Simply create a `NHNetworkClock`. Call `syncWithComplete:` in `- application: di
 }
 ```
 
-then get network time when sync complete:
+then get network time when sync complete in everywhere in your source code:
 
 ```
-[NSDate networkDate]
+NSDate *networkDate = [NSDate networkDate];
 ```
 #### More from NHNetworkClock
 
