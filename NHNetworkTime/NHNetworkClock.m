@@ -11,6 +11,7 @@
 @property (nonatomic) NSArray *sortDescriptors;
 @property (nonatomic) NSSortDescriptor *dispersionSortDescriptor;
 @property (nonatomic) dispatch_queue_t associationDelegateQueue;
+@property (nonatomic, readwrite) BOOL isSynchronized;
 @property (nonatomic, copy) void (^complete)();
 
 @end
@@ -33,9 +34,20 @@
         self.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"dispersion" ascending:YES]];
         self.timeAssociations = [NSMutableArray arrayWithCapacity:100];
         self.shouldUseSavedSynchronizedTime = YES;
+        self.isAutoSynchronizedWhenUserChangeLocalTime = YES;
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationSignificantTimeChangeNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            if(self.isAutoSynchronizedWhenUserChangeLocalTime) {
+                [self syncWithComplete:nil];
+            }
+        }];
     }
     
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)reset {

@@ -96,9 +96,6 @@ double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * stop) {
 
 @end
 
-#pragma mark -
-#pragma mark                        N E T W O R K • A S S O C I A T I O N
-
 @implementation NHNetAssociation
 
 //Initialize the association with a blank socket and prepare the time transaction to happen every 16 seconds (initial value)
@@ -172,7 +169,7 @@ double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * stop) {
     _active = FALSE;
 }
 
-#pragma mark                        N e t w o r k • T r a n s a c t i o n s
+#pragma mark - Network transactions
 
 /*┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
   │      Create a time query packet ...                                                              │
@@ -349,7 +346,7 @@ double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * stop) {
     }
 }
 
-#pragma mark                        N e t w o r k • C a l l b a c k s
+#pragma mark - Network callbacks
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didConnectToAddress:(NSData *)address {
     NTP_Logging(@"didConnectToAddress");
@@ -382,7 +379,7 @@ double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * stop) {
     return [NSDate dateWithTimeIntervalSince1970:ntpDiffSeconds(&NTP_1970, networkTime)];
 }
 
-#pragma mark                        P r e t t y P r i n t e r s
+#pragma mark - Pretty printer
 
 - (NSString *) prettyPrintPacket {
     NSMutableString *   prettyString = [NSMutableString stringWithFormat:@"prettyPrintPacket\n\n"];
@@ -447,7 +444,7 @@ double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * stop) {
             _trusty ? @"↑" : @"↓", _server, stratum, _offset, _dispersion];
 }
 
-#pragma mark                      N o t i f i c a t i o n • T r a p s
+#pragma mark - Notification Traps
 
 - (void)registerObservations {
 

@@ -13,13 +13,19 @@
 
 @interface NHNetworkClock : NSObject
 
-//Return the device clock time adjusted for the offset to network-derived UTC.
-@property (nonatomic, readonly, copy) NSDate * networkTime;
+@property (nonatomic, readonly, copy) NSDate *networkTime;
 @property (nonatomic, readonly) NSTimeInterval networkOffset;
-@property (nonatomic) BOOL isSynchronized;
+@property (nonatomic, readonly) BOOL isSynchronized;
+
+#pragma mark - Options
 
 // every time network time is synchronized with server, it will be saved to disk. When call sync function (syncWithComplete), if this property set to YES, it will use the previous saved time, before receive synchronized time from server. Default is YES
 @property (nonatomic) BOOL shouldUseSavedSynchronizedTime;
+
+// synchronize if user change local time
+@property (nonatomic) BOOL isAutoSynchronizedWhenUserChangeLocalTime;
+
+#pragma mark -
 
 + (instancetype) sharedNetworkClock;
 

@@ -43,7 +43,7 @@
     self.networkLabel.text = networkLabelText;
     
     if([NHNetworkClock sharedNetworkClock].isSynchronized) {
-        self.syncedLabel.text = @"Time is SYNCHRONINZED";
+        self.syncedLabel.text = @"Time is SYNCHRONIZED";
     }
     else {
         self.syncedLabel.text = @"Time is NOT synchronized";
