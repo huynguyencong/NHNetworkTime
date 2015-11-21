@@ -11,6 +11,9 @@ This project contains code to provide time obtained from standard time servers u
 
 Computers using the NTP protocol usually employ it in a continuous low level task to keep track of the time on a continuous basis.  A background application uses occasional time estimates from a set of time servers to determine the best time by sampling these values over time. iOS applications are different, being more likely to want a one-time, quick estimate of the time.
 
+#### Compatible
+It support iOS 7 and later.
+
 ### Usage
 
 #### Cocoapod
