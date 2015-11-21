@@ -22,7 +22,11 @@ Add below line to Podfile:
 ```
 pod NHNetworkTime
 ```  
-and run `pod update` in Terminal
+and run below command in Terminal to install:  
+`pod install`
+
+Note: If above pod isn't working, try using below pod defination in Podfile:  
+`pod 'NHNetworkTime', :git => 'https://github.com/huynguyencong/NHNetworkTime.git'`
 #### Manual
 Add all file in folder NHNetworkTime to your project. Then add `CocoaAsyncSocket` use Cocoapod or add manual.
 
@@ -74,3 +78,6 @@ NHNetworkClock is build from ios ntp open source from jbenet. NHNetworkClock fix
 - Property make you know whether sync complete or not
 - Save offset time local to use immediately right after launch app, don't have to waiting for server
 - Auto sync when user change local time
+
+### License
+NHNetworkTime is released under the Apache license. See LICENSE for details. Copyright © Nguyen Cong Huy
