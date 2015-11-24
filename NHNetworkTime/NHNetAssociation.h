@@ -19,21 +19,22 @@
 
 @interface NHNetAssociation : NSObject <GCDAsyncUdpSocketDelegate>
 
-@property (readonly) NSString *         server;             // server name "123.45.67.89"
-@property (readonly) BOOL               active;             // is this clock running yet?
-@property (readonly) BOOL               trusty;             // is this clock trustworthy
-@property (readonly) double             offset;             // offset from device time (secs)
+@property (readonly) NSString *server;  // server name "123.45.67.89"
+@property (readonly) BOOL active; // is this clock running yet?
+@property (readonly) BOOL trusty; // is this clock trustworthy
+@property (readonly) double offset; // offset from device time (secs)
 @property (weak) id<NHNetAssociationDelegate> delegate;
 
-- (instancetype) initWithServerName:(NSString *) serverName NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithServerName:(NSString *) serverName;
 
 // This sets the association in a mode where it repeatedly gets time from its server and performs statical check and averages on these multiple values to provide a more accurate time. Starts the timer firing (sets the fire time randonly within the next five seconds) ...
-- (void) enable;
+- (void)enable;
 
 //This stops the timer firing (sets the fire time to the infinite future) ... 
-- (void) finish;
+- (void)finish;
 
-- (void) sendTimeQuery;                                     // send one datagram to server ..
+// send one datagram to server ..
+- (void)sendTimeQuery;
 
 @end
 

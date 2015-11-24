@@ -19,8 +19,8 @@
 @implementation NHNetworkClock
 
 + (instancetype)sharedNetworkClock {
-    static id               sharedNetworkClockInstance = nil;
-    static dispatch_once_t  onceToken;
+    static id sharedNetworkClockInstance = nil;
+    static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
         sharedNetworkClockInstance = [[self alloc] init];
@@ -109,8 +109,8 @@
 // Use the following time servers or, if it exists, read the "ntp.hosts" file from the application resources and derive all the IP addresses referred to, remove any duplicates and create an 'association' (individual host client) for each one.
 
 - (void)createAssociations {
-    NSArray *           ntpDomains;
-    NSString *          filePath = [[NSBundle mainBundle] pathForResource:@"ntp.hosts" ofType:@""];
+    NSArray *ntpDomains;
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"ntp.hosts" ofType:@""];
     if (nil == filePath) {
         ntpDomains = @[@"0.pool.ntp.org",
                        @"0.uk.pool.ntp.org",
@@ -123,7 +123,7 @@
                        @"africa.pool.ntp.org"];
     }
     else {
-        NSString *      fileData = [[NSString alloc] initWithData:[[NSFileManager defaultManager]
+        NSString *fileData = [[NSString alloc] initWithData:[[NSFileManager defaultManager]
                                                                    contentsAtPath:filePath]
                                                          encoding:NSUTF8StringEncoding];
 
@@ -131,9 +131,9 @@
     }
 
     // for each NTP service domain name in the 'ntp.hosts' file : "0.pool.ntp.org" etc ...
-    NSMutableSet *      hostAddresses = [NSMutableSet setWithCapacity:100];
+    NSMutableSet *hostAddresses = [NSMutableSet setWithCapacity:100];
 
-    for (NSString * ntpDomainName in ntpDomains) {
+    for (NSString *ntpDomainName in ntpDomains) {
         if ([ntpDomainName length] == 0 ||
             [ntpDomainName characterAtIndex:0] == ' ' ||
             [ntpDomainName characterAtIndex:0] == '#') {
@@ -154,8 +154,8 @@
             continue;                                           // couldn't start resolution ...
         }
 
-        Boolean         nameFound;
-        CFArrayRef      ntpHostAddrs = CFHostGetAddressing (ntpHostName, &nameFound);
+        Boolean nameFound;
+        CFArrayRef ntpHostAddrs = CFHostGetAddressing (ntpHostName, &nameFound);
 
         if (!nameFound) {
             NTP_Logging(@"CFHostGetAddressing: %@ NOT resolved", ntpHostName);
@@ -169,7 +169,7 @@
             continue;                                           // NO addresses were resolved ...
         }
         //for each (sockaddr structure wrapped by a CFDataRef/NSData *) associated with the hostname, drop the IP address string into a Set to remove duplicates.
-        for (NSData * ntpHost in (__bridge NSArray *)ntpHostAddrs) {
+        for (NSData *ntpHost in (__bridge NSArray *)ntpHostAddrs) {
             [hostAddresses addObject:[GCDAsyncUdpSocket hostFromAddress:ntpHost]];
         }
 
@@ -179,7 +179,7 @@
     NTP_Logging(@"%@", hostAddresses);                          // all the addresses resolved
 
     // ... now start one 'association' (network clock server) for each address.
-    for (NSString * server in hostAddresses) {
+    for (NSString *server in hostAddresses) {
         NHNetAssociation *    timeAssociation = [[NHNetAssociation alloc] initWithServerName:server];
         timeAssociation.delegate = self;
 

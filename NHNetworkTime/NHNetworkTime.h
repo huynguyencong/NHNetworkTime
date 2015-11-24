@@ -1,10 +1,8 @@
-/*╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
-  ║ NetworkClock.h                                                                                   ║
-  ║                                                                                                  ║
-  ║ Created by Gavin Eadie on Oct17/10                                                               ║
-  ║ Copyright 2010 Ramsay Consulting. All rights reserved.                                           ║
-  ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝*/
-
+/*
+ NetworkClock.h
+ Created by Gavin Eadie on Oct17/10
+ Edited by Nguyen Cong Huy
+*/
 #import "NHNTLog.h"
 #import "NHNetAssociation.h"
 #import "NHNetworkClock.h"

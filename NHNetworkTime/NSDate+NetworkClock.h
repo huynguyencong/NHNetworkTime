@@ -12,14 +12,14 @@
 
 @property (NS_NONATOMIC_IOSONLY, readonly) NSTimeInterval timeIntervalSinceNetworkDate;
 
-+ (NSTimeInterval) timeIntervalSinceNetworkDate;
++ (NSTimeInterval)timeIntervalSinceNetworkDate;
 
-+ (NSDate *) networkDate;
++ (NSDate *)networkDate;
 
     // the threadsafe version guards against reading a double that could be
     // potentially being updated at the same time. Since doubles are 8 words,
     // and arm is 32bit, this is not atomic and could provide bad values.
 
-+ (NSDate *) threadsafeNetworkDate;
++ (NSDate *)threadsafeNetworkDate;
 
 @end

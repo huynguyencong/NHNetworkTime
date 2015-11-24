@@ -1,5 +1,5 @@
 # NHNetworkTime
-A network time protocol client.
+A network time protocol (NTP) client.
 
 ### About
 
