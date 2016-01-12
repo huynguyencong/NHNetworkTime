@@ -53,6 +53,13 @@ then get network time when sync complete in everywhere in your source code:
 ```
 NSDate *networkDate = [NSDate networkDate];
 ```
+
+or add notification to re-update your UI in anywhere you want
+
+```
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkTimeSyncCompleteNotification:) name:kNHNetworkTimeSyncCompleteNotification object:nil];
+```
+
 #### More from NHNetworkClock
 
 - Use `NSNotifcationCenter` to add observer `kNHNetworkTimeSyncCompleteNotification` to receive notification when time sync complete
