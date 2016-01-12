@@ -62,8 +62,8 @@
 #pragma mark - UI
 
 - (void)updateDateToLabel {
-    NSString *currentLabelText = [NSString stringWithFormat:@"%@", [NSDate date]];
-    NSString *networkLabelText = [NSString stringWithFormat:@"%@", [NSDate networkDate]];
+    NSString *currentLabelText = [NSString stringWithFormat:@"%@", [[NSDate date] descriptionWithLocale:[NSLocale systemLocale]]];
+    NSString *networkLabelText = [NSString stringWithFormat:@"%@", [[NSDate networkDate] descriptionWithLocale:[NSLocale systemLocale]]];
     
     self.currentLabel.text = currentLabelText;
     self.networkLabel.text = networkLabelText;
