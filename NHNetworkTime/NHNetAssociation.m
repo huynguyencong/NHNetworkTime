@@ -263,9 +263,11 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
     
     [self calculateTrusty];
 
-    if(self.delegate && [self.delegate respondsToSelector:@selector(netAssociationDidFinishGetTime:)]) {
-        [self.delegate netAssociationDidFinishGetTime:self];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(self.delegate && [self.delegate respondsToSelector:@selector(netAssociationDidFinishGetTime:)]) {
+            [self.delegate netAssociationDidFinishGetTime:self];
+        }
+    });
 }
 
 - (void)calculateTrusty {
@@ -342,8 +344,6 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data
       fromAddress:(NSData *)address withFilterContext:(id)filterContext {
-//  NTP_Logging(@"didReceiveData - [%@]", [GCDAsyncUdpSocket hostFromAddress:address]);
-
     [self decodePacket:data];
 }
 

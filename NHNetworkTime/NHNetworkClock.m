@@ -74,7 +74,6 @@
                     timeInterval = timeInterval + timeAssociation.offset;
                 }
                 else {
-                    NSLog(@"Clock•Drop: [%@]", timeAssociation.server);
                     if ([self.timeAssociations count] > 8) {
                         [self.timeAssociations removeObject:timeAssociation];
                         [timeAssociation finish];
