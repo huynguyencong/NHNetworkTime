@@ -12,7 +12,8 @@ This project contains code to provide time obtained from standard time servers u
 Computers using the NTP protocol usually employ it in a continuous low level task to keep track of the time on a continuous basis.  A background application uses occasional time estimates from a set of time servers to determine the best time by sampling these values over time. iOS applications are different, being more likely to want a one-time, quick estimate of the time.
 
 #### Compatible
-It support iOS 7 and later.
+- iOS 7 and later.  
+- Objective C, and Swift with bridge header (read below guide)
 
 ### Usage
 
@@ -60,6 +61,20 @@ or add notification to re-update your UI in anywhere you want
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkTimeSyncCompleteNotification:) name:kNHNetworkTimeSyncCompleteNotification object:nil];
 ```
 
+#### Swift
+Add `#import <NHNetworkTime.h>` in bridge header, and now, you can call Swift function like below:
+```
+NHNetworkClock.sharedNetworkClock().syncWithComplete { () -> Void in
+    print("Sync complete")
+}
+
+// and
+
+NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("syncCompleteNotification"), name: kNHNetworkTimeSyncCompleteNotification, object: nil)
+```
+
+* You can create bridge header file by create an Objective C file in project. Xcode will ask you to create bridge header file. After, you can delete temporatory ObjC file have just added, and import NHNetworkTime.h into there (Read more: https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html)
+
 #### More from NHNetworkClock
 
 - Use `NSNotifcationCenter` to add observer `kNHNetworkTimeSyncCompleteNotification` to receive notification when time sync complete
@@ -78,9 +93,9 @@ north-america.pool.ntp.org
 
 
 ### About this source
-NHNetworkClock is build from ios ntp open source from jbenet. NHNetworkClock fixed a critical bug get wrong time from origin source, and added more improvements:
+NHNetworkTime is built from ios ntp open source from jbenet. NHNetworkTime fixed a critical bug get wrong time from origin source, and added more improvements:
 
-- Sync function with complete block, you can
+- Sync function with complete block (but not recommmend, should use notification to update everywhere you want)
 - Post notification when sync complete
 - Property make you know whether sync complete or not
 - Save offset time local to use immediately right after launch app, don't have to waiting for server
