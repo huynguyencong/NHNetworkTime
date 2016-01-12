@@ -1,1 +1,1 @@
-pod 'CocoaAsyncSocket'
+pod 'NHNetworkTime', :path => '../../'

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,47 +17,76 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o1o-bs-NnP">
-                                <rect key="frame" x="241" y="60" width="118" height="30"/>
-                                <state key="normal" title="Get network time"/>
-                                <connections>
-                                    <action selector="getNetworkTimeTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ouk-G3-6er"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6EH-9a-JfV" userLabel="Current">
-                                <rect key="frame" x="271" y="110" width="59" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Local time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6EH-9a-JfV" userLabel="Local time value">
+                                <rect key="frame" x="130" y="104" width="71" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ny2-gj-CMy" userLabel="Network">
-                                <rect key="frame" x="268" y="151" width="65" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ny2-gj-CMy" userLabel="Network">
+                                <rect key="frame" x="130" y="142" width="92" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Synced: NO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LhX-pB-1xC">
-                                <rect key="frame" x="254" y="192" width="92" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync or not" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LhX-pB-1xC">
+                                <rect key="frame" x="254" y="180" width="93" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Local time:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VB4-Ia-ZIA">
+                                <rect key="frame" x="20" y="104" width="75" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network time:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0B7-0S-yDp">
+                                <rect key="frame" x="20" y="142" width="96" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change local time in Setting, and return this app, and see the network time update correctly" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XhE-gW-1Nd">
+                                <rect key="frame" x="20" y="544" width="560" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NHNetworkTime demo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NTz-vt-VOW">
+                                <rect key="frame" x="191" y="40" width="218" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="o1o-bs-NnP" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="9vc-iI-hcE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="XhE-gW-1Nd" secondAttribute="trailing" id="6E5-vJ-KoV"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="XhE-gW-1Nd" secondAttribute="bottom" constant="20" id="6Sj-4r-IKc"/>
                             <constraint firstItem="6EH-9a-JfV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Fh5-yt-LLD"/>
-                            <constraint firstItem="6EH-9a-JfV" firstAttribute="top" secondItem="o1o-bs-NnP" secondAttribute="bottom" constant="20" id="Gs3-oU-Puw"/>
+                            <constraint firstItem="ny2-gj-CMy" firstAttribute="baseline" secondItem="0B7-0S-yDp" secondAttribute="baseline" id="Hpz-bL-gh2"/>
+                            <constraint firstItem="0B7-0S-yDp" firstAttribute="top" secondItem="VB4-Ia-ZIA" secondAttribute="bottom" constant="20" id="IvL-VO-mr7"/>
+                            <constraint firstItem="XhE-gW-1Nd" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="K6S-Ya-9wR"/>
                             <constraint firstItem="LhX-pB-1xC" firstAttribute="top" secondItem="ny2-gj-CMy" secondAttribute="bottom" constant="20" id="Opl-Tq-GCF"/>
+                            <constraint firstItem="VB4-Ia-ZIA" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="QD0-Wd-P04"/>
                             <constraint firstItem="ny2-gj-CMy" firstAttribute="top" secondItem="6EH-9a-JfV" secondAttribute="bottom" constant="20" id="QQV-hX-TUm"/>
+                            <constraint firstItem="NTz-vt-VOW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TAe-PT-pVH"/>
                             <constraint firstItem="LhX-pB-1xC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wao-3m-BKM"/>
+                            <constraint firstItem="VB4-Ia-ZIA" firstAttribute="top" secondItem="NTz-vt-VOW" secondAttribute="bottom" constant="40" id="dw6-vQ-3PT"/>
                             <constraint firstItem="ny2-gj-CMy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jzW-RT-sqg"/>
-                            <constraint firstItem="o1o-bs-NnP" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="40" id="rcV-AP-QMO"/>
-                            <constraint firstItem="o1o-bs-NnP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sSc-tc-7v5"/>
+                            <constraint firstItem="6EH-9a-JfV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="110" id="ly7-fY-Ifo"/>
+                            <constraint firstItem="6EH-9a-JfV" firstAttribute="baseline" secondItem="VB4-Ia-ZIA" secondAttribute="baseline" id="mVc-cs-wk2"/>
+                            <constraint firstItem="ny2-gj-CMy" firstAttribute="leading" secondItem="6EH-9a-JfV" secondAttribute="leading" id="nIl-L0-lnI"/>
+                            <constraint firstItem="0B7-0S-yDp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="pCc-oQ-24W"/>
+                            <constraint firstItem="VB4-Ia-ZIA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="qI1-Pp-lFi"/>
+                            <constraint firstItem="NTz-vt-VOW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="wlp-uk-mRd"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="9vc-iI-hcE"/>
+                                <exclude reference="QD0-Wd-P04"/>
+                                <exclude reference="Fh5-yt-LLD"/>
+                                <exclude reference="QQV-hX-TUm"/>
+                                <exclude reference="jzW-RT-sqg"/>
                             </mask>
                         </variation>
                     </view>
@@ -68,6 +98,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="565" y="368"/>
         </scene>
     </scenes>
 </document>

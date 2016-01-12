@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *networkLabel;
 @property (weak, nonatomic) IBOutlet UILabel *syncedLabel;
 
+@property (nonatomic) NSTimer *oneSecondTimer;
+
 @end
 
 @implementation ViewController
@@ -27,26 +29,52 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self updateDate];
+    [self updateDateToLabel];
+    [self observeTimeSyncNotification];
+    [self createUpdateUITimer];
 }
 
-
-- (IBAction)getNetworkTimeTouched:(id)sender {
-    [self updateDate];
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.oneSecondTimer invalidate];
 }
 
-- (void)updateDate {
-    NSString *currentLabelText = [NSString stringWithFormat:@"Current: %@", [NSDate date]];
-    NSString *networkLabelText = [NSString stringWithFormat:@"Network: %@", [NSDate networkDate]];
+#pragma mark - Notification
+
+- (void)observeTimeSyncNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkTimeSyncCompleteNotification:) name:kNHNetworkTimeSyncCompleteNotification object:nil];
+}
+
+- (void)networkTimeSyncCompleteNotification:(NSNotification *)notification {
+    [self updateDateToLabel];
+}
+
+#pragma mark - Update label timer
+
+- (void)createUpdateUITimer {
+    self.oneSecondTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(oneSecondTimerTick) userInfo:nil repeats:YES];
+}
+
+- (void)oneSecondTimerTick {
+    [self updateDateToLabel];
+}
+
+#pragma mark - UI
+
+- (void)updateDateToLabel {
+    NSString *currentLabelText = [NSString stringWithFormat:@"%@", [NSDate date]];
+    NSString *networkLabelText = [NSString stringWithFormat:@"%@", [NSDate networkDate]];
     
     self.currentLabel.text = currentLabelText;
     self.networkLabel.text = networkLabelText;
     
     if([NHNetworkClock sharedNetworkClock].isSynchronized) {
         self.syncedLabel.text = @"Time is SYNCHRONIZED";
+        self.syncedLabel.textColor = [UIColor blueColor];
     }
     else {
         self.syncedLabel.text = @"Time is NOT synchronized";
+        self.syncedLabel.textColor = [UIColor redColor];
     }
 }
 

@@ -14,9 +14,6 @@
 		6145E9A91BAE61930090DEC0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6145E9A71BAE61930090DEC0 /* Main.storyboard */; };
 		6145E9AB1BAE61930090DEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6145E9AA1BAE61930090DEC0 /* Assets.xcassets */; };
 		6145E9AE1BAE61930090DEC0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6145E9AC1BAE61930090DEC0 /* LaunchScreen.storyboard */; };
-		6145E9BE1BAE61A50090DEC0 /* NHNetAssociation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6145E9B81BAE61A50090DEC0 /* NHNetAssociation.m */; settings = {ASSET_TAGS = (); }; };
-		6145E9BF1BAE61A50090DEC0 /* NHNetworkClock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6145E9BA1BAE61A50090DEC0 /* NHNetworkClock.m */; settings = {ASSET_TAGS = (); }; };
-		6145E9C01BAE61A50090DEC0 /* NSDate+NetworkClock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6145E9BC1BAE61A50090DEC0 /* NSDate+NetworkClock.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,14 +27,6 @@
 		6145E9AA1BAE61930090DEC0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6145E9AD1BAE61930090DEC0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6145E9AF1BAE61930090DEC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6145E9B61BAE61A50090DEC0 /* NHNetworkTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHNetworkTime.h; sourceTree = "<group>"; };
-		6145E9B71BAE61A50090DEC0 /* NHNetAssociation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHNetAssociation.h; sourceTree = "<group>"; };
-		6145E9B81BAE61A50090DEC0 /* NHNetAssociation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHNetAssociation.m; sourceTree = "<group>"; };
-		6145E9B91BAE61A50090DEC0 /* NHNetworkClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHNetworkClock.h; sourceTree = "<group>"; };
-		6145E9BA1BAE61A50090DEC0 /* NHNetworkClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHNetworkClock.m; sourceTree = "<group>"; };
-		6145E9BB1BAE61A50090DEC0 /* NSDate+NetworkClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+NetworkClock.h"; sourceTree = "<group>"; };
-		6145E9BC1BAE61A50090DEC0 /* NSDate+NetworkClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NetworkClock.m"; sourceTree = "<group>"; };
-		6145E9BD1BAE61A50090DEC0 /* NHNTLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHNTLog.h; sourceTree = "<group>"; };
 		8650FECB11C7D1ADD8BE9325 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		91EFB86F8FF89B90715E12E6 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D11798A2BB0DA7F9A9FC84D8 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -66,7 +55,6 @@
 		6145E9921BAE61930090DEC0 = {
 			isa = PBXGroup;
 			children = (
-				6145E9B51BAE61A50090DEC0 /* NHNetworkTime */,
 				6145E99D1BAE61930090DEC0 /* NHNetworkTimeExample */,
 				6145E99C1BAE61930090DEC0 /* Products */,
 				8B47C28043284707956D93DE /* Pods */,
@@ -104,22 +92,6 @@
 				6145E99F1BAE61930090DEC0 /* main.m */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		6145E9B51BAE61A50090DEC0 /* NHNetworkTime */ = {
-			isa = PBXGroup;
-			children = (
-				6145E9B61BAE61A50090DEC0 /* NHNetworkTime.h */,
-				6145E9B71BAE61A50090DEC0 /* NHNetAssociation.h */,
-				6145E9B81BAE61A50090DEC0 /* NHNetAssociation.m */,
-				6145E9B91BAE61A50090DEC0 /* NHNetworkClock.h */,
-				6145E9BA1BAE61A50090DEC0 /* NHNetworkClock.m */,
-				6145E9BB1BAE61A50090DEC0 /* NSDate+NetworkClock.h */,
-				6145E9BC1BAE61A50090DEC0 /* NSDate+NetworkClock.m */,
-				6145E9BD1BAE61A50090DEC0 /* NHNTLog.h */,
-			);
-			name = NHNetworkTime;
-			path = ../../NHNetworkTime;
 			sourceTree = "<group>";
 		};
 		8B47C28043284707956D93DE /* Pods */ = {
@@ -238,10 +210,7 @@
 			files = (
 				6145E9A61BAE61930090DEC0 /* ViewController.m in Sources */,
 				6145E9A31BAE61930090DEC0 /* AppDelegate.m in Sources */,
-				6145E9C01BAE61A50090DEC0 /* NSDate+NetworkClock.m in Sources */,
-				6145E9BF1BAE61A50090DEC0 /* NHNetworkClock.m in Sources */,
 				6145E9A01BAE61930090DEC0 /* main.m in Sources */,
-				6145E9BE1BAE61A50090DEC0 /* NHNetAssociation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
