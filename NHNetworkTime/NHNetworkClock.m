@@ -221,8 +221,10 @@
             self.complete = nil;
         }
         
-        self.isSynchronized = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNHNetworkTimeSyncCompleteNotification object:nil userInfo:nil];
+        if (self.isSynchronized == NO) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNHNetworkTimeSyncCompleteNotification object:nil userInfo:nil];
+            self.isSynchronized = YES;
+        }
     }
 }
 
