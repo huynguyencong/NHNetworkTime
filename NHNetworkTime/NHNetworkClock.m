@@ -190,7 +190,8 @@
 // Stop all the individual ntp clients associations ..
 
 - (void)finishAssociations {
-    for (NHNetAssociation * timeAssociation in self.timeAssociations) {
+    NSArray *arr = [self.timeAssociations copy];
+    for (NHNetAssociation * timeAssociation in arr) {
         timeAssociation.delegate = nil;
         [timeAssociation finish];
     }
