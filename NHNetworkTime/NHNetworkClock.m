@@ -65,7 +65,9 @@
     
     if(self.timeAssociations.count > 0) {
     
-        NSArray *sortedArray = [self.timeAssociations sortedArrayUsingDescriptors:self.sortDescriptors];
+        NSArray *sortedArray = [[self.timeAssociations sortedArrayUsingDescriptors:self.sortDescriptors] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [evaluatedObject isKindOfClass:[NHNetAssociation class]];
+        }]];
         
         for (NHNetAssociation * timeAssociation in sortedArray) {
             if (timeAssociation.active) {
