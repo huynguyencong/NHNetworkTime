@@ -1,17 +1,17 @@
 PODS:
-  - CocoaAsyncSocket (7.4.2)
-  - NHNetworkTime (1.1):
-    - CocoaAsyncSocket (~> 7.4.1)
+  - CocoaAsyncSocket (7.4.1)
+  - NHNetworkTime (1.4):
+    - CocoaAsyncSocket (<= 7.4.1)
 
 DEPENDENCIES:
   - NHNetworkTime (from `../../`)
 
 EXTERNAL SOURCES:
   NHNetworkTime:
-    :path: ../../
+    :path: "../../"
 
 SPEC CHECKSUMS:
-  CocoaAsyncSocket: f5783bdedd232d91b89769bc4b5a1580aed518ad
-  NHNetworkTime: 53ae7921c5cffa9daa2dbe15722b3221f1904eb0
+  CocoaAsyncSocket: 7cbf214b27f8e7f7574db6a3fd96352ffaed433d
+  NHNetworkTime: d025aa1d435df97622f33a676da67752ac269c6d
 
 COCOAPODS: 0.39.0

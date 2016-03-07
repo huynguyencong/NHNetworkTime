@@ -9,6 +9,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
   s.source_files = 'NHNetworkTime/*.{h,m}'
   s.framework = 'CFNetwork'
-  s.dependency 'CocoaAsyncSocket', '~>7.4.1'
+  s.dependency 'CocoaAsyncSocket', '<=7.4.1'
   s.requires_arc = true
 end
