@@ -19,7 +19,7 @@
 
 #pragma mark - Options
 
-// every time network time is synchronized with server, it will be saved to disk. When call sync function (syncWithComplete), if this property set to YES, it will use the previous saved time, before receive synchronized time from server. Default is YES
+// every time network time is synchronized with server, it will be saved to disk. When call sync function (synchronize), if this property set to YES, it will use the previous saved time, before receive synchronized time from server. Default is YES
 @property (nonatomic) BOOL shouldUseSavedSynchronizedTime;
 
 // synchronize if user change local time
@@ -29,6 +29,6 @@
 
 + (instancetype) sharedNetworkClock;
 
-- (void)syncWithComplete:(void (^)())complete;
+- (void)synchronize;
 
 @end

@@ -12,7 +12,6 @@
 @property (atomic) NSSortDescriptor *dispersionSortDescriptor;
 @property (atomic) dispatch_queue_t associationDelegateQueue;
 @property (atomic, readwrite) BOOL isSynchronized;
-@property (atomic, copy) void (^complete)();
 
 @end
 
@@ -38,7 +37,7 @@
         
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationSignificantTimeChangeNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
             if(self.isAutoSynchronizedWhenUserChangeLocalTime) {
-                [self syncWithComplete:nil];
+                [self synchronize];
             }
         }];
     }
@@ -197,14 +196,14 @@
         timeAssociation.delegate = nil;
         [timeAssociation finish];
     }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Sync
 
-- (void)syncWithComplete:(void (^)())complete {
+- (void)synchronize {
     [self reset];
-    self.complete = complete;
     
     [[[NSOperationQueue alloc] init] addOperation:[[NSInvocationOperation alloc]
                                                    initWithTarget:self
@@ -218,11 +217,6 @@
     if(netAssociation.active && netAssociation.trusty) {
         
         [[NSUserDefaults standardUserDefaults] setDouble:netAssociation.offset forKey:kTimeOffsetKey];
-        
-        if(self.complete) {
-            self.complete();
-            self.complete = nil;
-        }
         
         if (self.isSynchronized == NO) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kNHNetworkTimeSyncCompleteNotification object:nil userInfo:nil];
