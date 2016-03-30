@@ -7,11 +7,11 @@
 
 @interface NHNetworkClock () <NHNetAssociationDelegate>
 
-@property (atomic) NSMutableArray *timeAssociations;
-@property (atomic) NSArray *sortDescriptors;
-@property (atomic) NSSortDescriptor *dispersionSortDescriptor;
-@property (atomic) dispatch_queue_t associationDelegateQueue;
-@property (atomic, readwrite) BOOL isSynchronized;
+@property NSMutableArray *timeAssociations;
+@property NSArray *sortDescriptors;
+@property NSSortDescriptor *dispersionSortDescriptor;
+@property dispatch_queue_t associationDelegateQueue;
+@property (readwrite) BOOL isSynchronized;
 
 @end
 
