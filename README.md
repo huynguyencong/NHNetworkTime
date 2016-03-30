@@ -23,7 +23,7 @@ Add below line to Podfile:
 ```
 pod NHNetworkTime
 ```  
-and run below command in Terminal to install:  
+and then run below command in Terminal to install:  
 `pod install`
 
 Note: If above pod isn't working, try using below pod defination in Podfile:  
@@ -38,24 +38,22 @@ Import this whenever you want to get time:
 #import "NHNetworkTime.h"
 ```
 
-
-
-Call `syncWithComplete:` in `- application: didFinishLaunchingWithOptions:` to synchronize time from server. Use completion block if you want:
+Call `synchronize` in `- application: didFinishLaunchingWithOptions:` to update time from server when you launch app:
 
 ```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [[NHNetworkClock sharedNetworkClock] syncWithComplete:nil];
+    [[NHNetworkClock sharedNetworkClock] synchronize];
     return YES;
 }
 ```
 
-then get network time when sync complete in everywhere in your source code:
+then you can get network time when sync complete in anywhere in your source code:
 
 ```
 NSDate *networkDate = [NSDate networkDate];
 ```
 
-or add notification to re-update your UI in anywhere you want
+or add notification to re-update your UI in anywhere you want when time is updated:
 
 ```
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkTimeSyncCompleteNotification:) name:kNHNetworkTimeSyncCompleteNotification object:nil];
@@ -63,13 +61,14 @@ or add notification to re-update your UI in anywhere you want
 
 #### Swift
 Add `#import <NHNetworkTime.h>` in bridge header, and now, you can call Swift function like below:
+
 ```
-NHNetworkClock.sharedNetworkClock().syncWithComplete { () -> Void in
-    print("Sync complete")
-}
+NHNetworkClock.sharedNetworkClock().synchronize()
+```
 
-// and
+and:
 
+```
 NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("syncCompleteNotification"), name: kNHNetworkTimeSyncCompleteNotification, object: nil)
 ```
 
@@ -95,7 +94,6 @@ north-america.pool.ntp.org
 ### About this source
 NHNetworkTime is built from ios ntp open source from jbenet. NHNetworkTime fixed a critical bug get wrong time from origin source, and added more improvements:
 
-- Sync function with complete block (but not recommmend, should use notification to update everywhere you want)
 - Post notification when sync complete
 - Property make you know whether sync complete or not
 - Save offset time local to use immediately right after launch app, don't have to waiting for server
