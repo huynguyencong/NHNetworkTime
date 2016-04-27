@@ -7,13 +7,10 @@
  Multiple servers are used in a process in which each client/server pair (association) works to obtain its own best version of the time.  The client sends small UDP packets to the server and the server overwrites certain fields in the packet and returns it immediately.  As each packet is received, the offset between the client's network time and the system clock is derived with associated statistics delta, epsilon, and psi.
  Each association makes a best effort at obtaining an accurate time and makes it available as a property.  Another process may use this to select, cluster, and combine the various servers' data to determine the most accurate and reliable candidates to provide an overall best time.
  */
-
+ 
+#import <CocoaAsyncSocket/GCDAsyncUdpSocket.h>
 #import <UIKit/UIKit.h>
 #import <sys/time.h>
-
-
-
-#import "GCDAsyncUdpSocket.h"
 
 @protocol NHNetAssociationDelegate;
 
