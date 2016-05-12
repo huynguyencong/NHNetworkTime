@@ -60,22 +60,37 @@ or add notification to re-update your UI in anywhere you want when time is updat
 ```
 
 #### Swift
-Add `#import <NHNetworkTime.h>` in bridge header, and now, you can call Swift function like below:
+#####Use `use_frameworks!`
+
+If you have `use_frameworks!` option in Podfile, import `NHNetworkTime` framework in each code file use `NHNetworkTime` objects:
+
+```
+@import NHNetworkTime
+```
+
+
+##### Not use `use_frameworks!`
+
+
+Import `NHNetworkTime.h` to your in bridge header file:  
+
+```
+#import <NHNetworkTime.h>
+```
+* You can create bridge header file by create an Objective C file in project. Xcode will ask you to create bridge header file. After, you can delete the temporatory Objective C file have just added, and import `NHNetworkTime.h` into there (Read more: https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html)
+
+##### In your code
+Now, you can call below code in your code:  
 
 ```
 NHNetworkClock.sharedNetworkClock().synchronize()
 ```
-
 and:
 
 ```
 NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("syncCompleteNotification"), name: kNHNetworkTimeSyncCompleteNotification, object: nil)
 ```
-
-* You can create bridge header file by create an Objective C file in project. Xcode will ask you to create bridge header file. After, you can delete temporatory ObjC file have just added, and import NHNetworkTime.h into there (Read more: https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html)
-
 #### More from NHNetworkClock
-
 - Use `NSNotifcationCenter` to add observer `kNHNetworkTimeSyncCompleteNotification` to receive notification when time sync complete
 - Property `isSynchronized`: Check network time synchronized or not
 - Property `shouldUseSavedSynchronizedTime`: Should use offset time saved in the last synchronization before sync from server. Default is YES.
