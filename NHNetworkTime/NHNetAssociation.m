@@ -1,5 +1,6 @@
 #import "NHNetAssociation.h"
 #import <sys/time.h>
+#import "CocoaAsyncSocket/GCDAsyncUdpSocket.h"
 #import "NHNTLog.h"
 
 /*┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -66,7 +67,7 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
     return a + b / 4294967296.0;
 }
 
-@interface NHNetAssociation() {
+@interface NHNetAssociation() <GCDAsyncUdpSocketDelegate> {
     double fifoQueue[8];
     
     NHTimeStamp ntpClientSendTime;
