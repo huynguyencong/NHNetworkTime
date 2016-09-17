@@ -2,7 +2,7 @@ PODS:
   - CocoaAsyncSocket (7.5.0):
     - CocoaAsyncSocket/GCD (= 7.5.0)
   - CocoaAsyncSocket/GCD (7.5.0)
-  - NHNetworkTime (1.6):
+  - NHNetworkTime (1.7):
     - CocoaAsyncSocket (~> 7.5.0)
 
 DEPENDENCIES:
@@ -14,7 +14,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 3baeb1ddd969f81cf9fca81053ae49ef2d1cbbfa
-  NHNetworkTime: 7dde717f7f335cd64b4f595f4d8eee77eaa59675
+  NHNetworkTime: b140ee21770aed41e7b8fd43647bce6349ad10f2
 
 PODFILE CHECKSUM: 18bb4b225dff96cdf16db3cea747adc903a9705d
 
