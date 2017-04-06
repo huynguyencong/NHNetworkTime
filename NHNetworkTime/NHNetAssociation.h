@@ -12,12 +12,9 @@
 #import <sys/time.h>
 
 
-
-#import <CocoaAsyncSocket/GCDAsyncUdpSocket.h>
-
 @protocol NHNetAssociationDelegate;
 
-@interface NHNetAssociation : NSObject <GCDAsyncUdpSocketDelegate>
+@interface NHNetAssociation : NSObject
 
 @property (readonly) NSString *server;  // server name "123.45.67.89"
 @property (readonly) BOOL active; // is this clock running yet?

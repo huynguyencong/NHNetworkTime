@@ -1,4 +1,5 @@
 #import <arpa/inet.h>
+#import "CocoaAsyncSocket/GCDAsyncUdpSocket.h"
 
 #import "NHNetworkClock.h"
 #import "NHNTLog.h"
