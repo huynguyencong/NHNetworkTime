@@ -163,6 +163,10 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
     
     _active = FALSE;
     
+    if(self.socket) {
+      [self.socket close];
+    }
+    
     [self unregisterObservations];
 }
 
