@@ -1,1 +1,3 @@
-pod 'NHNetworkTime', :path => '../../'
+target 'NHNetworkTimeExample' do
+    pod 'NHNetworkTime', :path => '../../'
+end
