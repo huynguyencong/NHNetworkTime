@@ -1,6 +1,7 @@
 #import "NHNetAssociation.h"
 #import <sys/time.h>
 #import "NHNTLog.h"
+#import "NSDate+NetworkClock.h"
 
 /*┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
   │  NTP Timestamp Structure                                                                         │
@@ -219,49 +220,53 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
 }
 
 - (void)decodePacket:(NSData *) data {
-    // grab the packet arrival time as fast as possible, before computations below ...
-    ntp_time_now(&ntpClientRecvTime);
+	NHNetworkClock *sharedClock = [NHNetworkClock sharedNetworkClock];
+	
+	@synchronized(sharedClock) {
+		// grab the packet arrival time as fast as possible, before computations below ...
+		ntp_time_now(&ntpClientRecvTime);
 
-    uint32_t        wireData[12];
-    [data getBytes:wireData length:48];
+		uint32_t        wireData[12];
+		[data getBytes:wireData length:48];
 
-	int mode = ntohl(wireData[0]) >> 24 & 0x07;
-	self.stratum = ntohl(wireData[0]) >> 16 & 0xff;
+		int mode = ntohl(wireData[0]) >> 24 & 0x07;
+		self.stratum = ntohl(wireData[0]) >> 16 & 0xff;
 
-    _dispersion = ntohl(wireData[2]) * 0.0152587890625;                 // error (mS)
+		_dispersion = ntohl(wireData[2]) * 0.0152587890625;                 // error (mS)
 
-    ntpServerBaseTime.wholeSeconds = ntohl(wireData[4]);                // when server clock was wound
-    ntpServerBaseTime.fractSeconds = ntohl(wireData[5]);
+		ntpServerBaseTime.wholeSeconds = ntohl(wireData[4]);                // when server clock was wound
+		ntpServerBaseTime.fractSeconds = ntohl(wireData[5]);
 
-    // if the send time in the packet isn't the same as the remembered send time, ditch it ...
-    if (ntpClientSendTime.wholeSeconds != ntohl(wireData[6]) ||
-        ntpClientSendTime.fractSeconds != ntohl(wireData[7])) return;   //  NO;
+		// if the send time in the packet isn't the same as the remembered send time, ditch it ...
+		if (ntpClientSendTime.wholeSeconds != ntohl(wireData[6]) ||
+			ntpClientSendTime.fractSeconds != ntohl(wireData[7])) return;   //  NO;
 
-    ntpServerRecvTime.wholeSeconds = ntohl(wireData[8]);
-    ntpServerRecvTime.fractSeconds = ntohl(wireData[9]);
-    ntpServerSendTime.wholeSeconds = ntohl(wireData[10]);
-    ntpServerSendTime.fractSeconds = ntohl(wireData[11]);
-    
-    //determine the quality of this particular time if max_error is less than 50mS (and not zero) AND stratum > 0 AND the mode is 4 (packet came from server) AND the server clock was set less than 1 minute ago
-    _offset = INFINITY;                                                 // clock meaningless
-    if ((_dispersion < 50.0 && _dispersion > 0.00001) &&
-        (self.stratum > 0) && (mode == 4) &&
-        (ntpDiffSeconds(&ntpServerBaseTime, &ntpServerSendTime) < 60.0)) {
-        
-        double  t41 = ntpDiffSeconds(&ntpClientSendTime, &ntpClientRecvTime);   // .. (T4-T1)
-        double  t32 = ntpDiffSeconds(&ntpServerRecvTime, &ntpServerSendTime);   // .. (T3-T2)
+		ntpServerRecvTime.wholeSeconds = ntohl(wireData[8]);
+		ntpServerRecvTime.fractSeconds = ntohl(wireData[9]);
+		ntpServerSendTime.wholeSeconds = ntohl(wireData[10]);
+		ntpServerSendTime.fractSeconds = ntohl(wireData[11]);
+		
+		//determine the quality of this particular time if max_error is less than 50mS (and not zero) AND stratum > 0 AND the mode is 4 (packet came from server) AND the server clock was set less than 1 minute ago
+		_offset = INFINITY;                                                 // clock meaningless
+		if ((_dispersion < 50.0 && _dispersion > 0.00001) &&
+			(self.stratum > 0) && (mode == 4) &&
+			(ntpDiffSeconds(&ntpServerBaseTime, &ntpServerSendTime) < 60.0)) {
+			
+			double  t41 = ntpDiffSeconds(&ntpClientSendTime, &ntpClientRecvTime);   // .. (T4-T1)
+			double  t32 = ntpDiffSeconds(&ntpServerRecvTime, &ntpServerSendTime);   // .. (T3-T2)
 
-        _roundtrip  = t41 - t32;
-        
-        double  t21 = ntpDiffSeconds(&ntpServerSendTime, &ntpClientRecvTime);   // .. (T2-T1)
-        double  t34 = ntpDiffSeconds(&ntpServerRecvTime, &ntpClientSendTime);   // .. (T3-T4)
+			_roundtrip  = t41 - t32;
+			
+			double  t21 = ntpDiffSeconds(&ntpServerSendTime, &ntpClientRecvTime);   // .. (T2-T1)
+			double  t34 = ntpDiffSeconds(&ntpServerRecvTime, &ntpClientSendTime);   // .. (T3-T4)
 
-        _offset = (t21 + t34) / 2.0;                                            // calculate offset
-        
-        _active = TRUE;
-    }
-    
-    [self calculateTrusty];
+			_offset = (t21 + t34) / 2.0;                                            // calculate offset
+			
+			_active = TRUE;
+		}
+		
+		[self calculateTrusty];
+	}
 
     dispatch_async(dispatch_get_main_queue(), ^{
         if(self.delegate && [self.delegate respondsToSelector:@selector(netAssociationDidFinishGetTime:)]) {
