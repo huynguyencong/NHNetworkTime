@@ -22,12 +22,18 @@ Add below line to Podfile:
 
 ```
 pod NHNetworkTime
-```  
+```
+
 and then run below command in Terminal to install:  
+
 `pod install`
 
 Note: If above pod isn't working, try using below pod defination in Podfile:  
-`pod 'NHNetworkTime', :git => 'https://github.com/huynguyencong/NHNetworkTime.git'`
+
+```
+pod 'NHNetworkTime', :git => 'https://github.com/huynguyencong/NHNetworkTime.git'
+```
+
 #### Manual
 Add all file in folder NHNetworkTime to your project. Then add `CocoaAsyncSocket` use Cocoapod or add manual.
 
