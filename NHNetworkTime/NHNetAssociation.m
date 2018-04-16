@@ -266,13 +266,13 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
 		}
 		
 		[self calculateTrusty];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(self.delegate && [self.delegate respondsToSelector:@selector(netAssociationDidFinishGetTime:)]) {
+                [self.delegate netAssociationDidFinishGetTime:self];
+            }
+        });
 	}
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(self.delegate && [self.delegate respondsToSelector:@selector(netAssociationDidFinishGetTime:)]) {
-            [self.delegate netAssociationDidFinishGetTime:self];
-        }
-    });
 }
 
 - (void)calculateTrusty {
