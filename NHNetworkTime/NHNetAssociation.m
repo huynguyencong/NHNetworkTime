@@ -88,6 +88,8 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
 @property (readonly) double dispersion; // milliSeconds
 @property (readonly) double roundtrip;  // seconds
 
+@property (strong, nonatomic) NSMutableArray *observers;
+
 @end
 
 @implementation NHNetAssociation
@@ -155,12 +157,18 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
 }
 
 - (void)finish {
-    [self.repeatingTimer setFireDate:[NSDate distantFuture]];
+    [self.repeatingTimer invalidate];
 
     for (short i = 0; i < 8; i++) fifoQueue[i] = NAN;      // set fifo to all empty
     self.fifoIndex = 0;
     
     _active = FALSE;
+    
+    if(self.socket) {
+      [self.socket close];
+    }
+    
+    [self unregisterObservations];
 }
 
 #pragma mark - Network transactions
@@ -385,31 +393,67 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
 
     // if associations are going to have a life, they have to react to their app being backgrounded.
     
-	[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
-													  object:nil queue:nil
-												  usingBlock:^
+    __weak typeof(self) weakSelf = self;
+    
+    if(self.observers && self.observers.count > 0) {
+        [self unregisterObservations];
+    } else {
+        self.observers = [[NSMutableArray alloc] init];
+    }
+    
+    [self.observers addObject:[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
+                                                                                object:nil
+                                                                                 queue:nil
+                                                                            usingBlock:^
 	 (NSNotification * note) {
 		 NTP_Logging(@"Application -> Background");
-		 [self finish];
-	 }];
+         
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         
+         if(strongSelf) {
+             [strongSelf finish];
+         }
+     }]];
 
-	[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
-													  object:nil queue:nil
-												  usingBlock:^
+	[self.observers addObject:[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification
+                                                                                object:nil
+                                                                                 queue:nil
+                                                                            usingBlock:^
 	 (NSNotification * note) {
 		 NTP_Logging(@"Application -> Foreground");
-		 [self enable];
-	 }];
+         
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         
+         if(strongSelf) {
+             [strongSelf enable];
+         }
+	 }]];
 
     // significantTimeChange -- trash the fifo ..
-	[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationSignificantTimeChangeNotification
-													  object:nil queue:nil
-												  usingBlock:^
+	[self.observers addObject:[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationSignificantTimeChangeNotification
+                                                                                object:nil
+                                                                                 queue:nil
+                                                                            usingBlock:^
 	 (NSNotification * note) {
 		 NTP_Logging(@"Application -> SignificantTimeChange");
-		 for (short i = 0; i < 8; i++) fifoQueue[i] = NAN;      // set fifo to all empty
-		 self.fifoIndex = 0;
-	 }];
+         
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         
+         if(strongSelf) {
+             for (short i = 0; i < 8; i++) strongSelf->fifoQueue[i] = NAN;      // set fifo to all empty
+             strongSelf.fifoIndex = 0;
+         }
+	 }]];
+}
+
+- (void)unregisterObservations {
+    if(self.observers) {
+        for(id observer in self.observers) {
+            [[NSNotificationCenter defaultCenter] removeObserver:observer];
+        }
+        
+        [self.observers removeAllObjects];
+    }
 }
 
 @end
