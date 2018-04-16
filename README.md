@@ -19,10 +19,8 @@ Computers using the NTP protocol usually employ it in a continuous low level tas
 
 #### Cocoapod
 Add below line to Podfile:  
+`pod NHNetworkTime`
 
-```
-pod NHNetworkTime
-```  
 and then run below command in Terminal to install:  
 `pod install`
 
