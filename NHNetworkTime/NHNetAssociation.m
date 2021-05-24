@@ -114,6 +114,10 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
     return self;
 }
 
+- (void)dealloc {
+    [self unregisterObservations];
+}
+
 - (void)enable {
     
     // Create a first-in/first-out queue for time samples.  As we compute each new time obtained from the server we push it into the fifo.  We sample the contents of the fifo for quality and, if it meets our standards we use the contents of the fifo to obtain a weighted average of the times.
@@ -167,8 +171,6 @@ double ntpDiffSeconds(NHTimeStamp *start, NHTimeStamp *stop) {
     if(self.socket) {
       [self.socket close];
     }
-    
-    [self unregisterObservations];
 }
 
 #pragma mark - Network transactions
